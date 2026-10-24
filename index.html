@@ -3,380 +3,878 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kasir Sembako</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StylePOS | Kasir Fashion</title>
 <style>
-:root{--green:#16784b;--light:#f3f7f4;--border:#dfe7e1}
+:root{
+  --primary:#7c3aed;
+  --primary-dark:#6025c7;
+  --bg:#f7f6fb;
+  --white:#fff;
+  --text:#252136;
+  --muted:#77738a;
+  --border:#e9e5f1;
+  --danger:#dc3545;
+  --success:#16865c;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:#203127}
-header{background:var(--green);color:white;padding:22px 5%}
-header h1{margin:0 0 6px;font-size:25px}
-header p{margin:0;font-size:14px}
-nav{display:flex;gap:8px;padding:12px 5%;background:white;overflow:auto;border-bottom:1px solid var(--border)}
-button{cursor:pointer;border:0;border-radius:8px;padding:11px 14px;font-weight:600}
-nav button{background:#edf3ef;color:#28513b;white-space:nowrap}
-nav button.active,.primary{background:var(--green);color:white}
-main{max-width:1100px;margin:auto;padding:22px 5% 50px}
-.panel{background:white;padding:18px;border:1px solid var(--border);border-radius:12px;margin-bottom:16px}
-h2{font-size:19px;margin:0 0 16px}
-h3{font-size:16px;margin:0 0 12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
-.stat{background:white;border:1px solid var(--border);border-radius:12px;padding:15px}
-.stat span{font-size:12px;color:#617066}
-.stat strong{display:block;font-size:20px;margin-top:8px;overflow-wrap:anywhere}
-input,select{width:100%;padding:11px;border:1px solid #cbd8ce;border-radius:7px;font:inherit;margin:5px 0 12px;background:white}
-label{font-size:13px;font-weight:600}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.product{border:1px solid var(--border);padding:13px;border-radius:9px;margin:9px 0}
-.product button{margin-top:8px}
-.small{font-size:12px;color:#68776d}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--border)}
-th{color:#637268}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;font-size:14px
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:17px 4%;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap
+}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+  background:var(--primary);color:white;border-radius:12px;
+  width:43px;height:43px;display:grid;place-items:center;
+  font-size:23px
+}
+.brand h1{font-size:20px;margin:0 0 4px}
+.brand p{margin:0;color:var(--muted);font-size:12px}
+#clock{color:var(--muted);font-size:12px}
+.layout{display:flex;min-height:calc(100vh - 76px)}
+.sidebar{
+  width:220px;flex-shrink:0;padding:20px 13px;
+  background:white;border-right:1px solid var(--border)
+}
+.nav-btn{
+  display:flex;gap:12px;align-items:center;width:100%;
+  text-align:left;padding:13px;border:0;border-radius:9px;
+  background:transparent;color:#5c566c;margin-bottom:6px
+}
+.nav-btn.active{background:#f0e9ff;color:var(--primary);font-weight:bold}
+.nav-btn:hover{background:#f6f1ff}
+.content{flex:1;min-width:0;padding:25px;max-width:1500px}
+.page{display:none}
+.page.active{display:block}
+.page-title{margin:0 0 5px;font-size:24px}
+.subtitle{color:var(--muted);margin:0 0 23px}
+.stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px;margin-bottom:20px
+}
+.stat,.card{
+  background:white;border:1px solid var(--border);
+  border-radius:13px;padding:19px
+}
+.stat-label{color:var(--muted);font-size:12px}
+.stat-value{font-size:24px;font-weight:bold;margin-top:12px;overflow-wrap:anywhere}
+.stat-icon{font-size:22px;margin-bottom:9px}
+.card h3{font-size:16px;margin:0 0 16px}
+.grid-two{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:17px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.toolbar input,.toolbar select{flex:1;min-width:130px}
+input,select{
+  border:1px solid #ded8e8;background:white;border-radius:8px;
+  padding:11px 12px;color:var(--text);width:100%;min-width:0
+}
+input:focus,select:focus{outline:2px solid #d8c5ff;border-color:var(--primary)}
+label{display:block;font-weight:bold;font-size:12px;margin-bottom:7px}
+.field{margin-bottom:14px}
+.btn{
+  border:0;border-radius:8px;padding:11px 14px;
+  font-weight:bold;display:inline-flex;align-items:center;
+  justify-content:center;gap:7px
+}
+.btn-primary{background:var(--primary);color:white}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-light{background:#f1edf7;color:#4d3c68}
+.btn-danger{background:#fff0f1;color:var(--danger)}
+.btn-success{background:var(--success);color:white}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.product-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px
+}
+.product{
+  border:1px solid var(--border);border-radius:11px;
+  padding:13px;display:flex;flex-direction:column;gap:8px;min-width:0
+}
+.product-emoji{
+  background:#f6f0ff;border-radius:8px;height:75px;
+  display:grid;place-items:center;font-size:37px
+}
+.product-name{font-weight:bold;overflow-wrap:anywhere}
+.product-meta{color:var(--muted);font-size:12px}
+.price{color:var(--primary);font-size:15px;font-weight:bold}
+.product .btn{margin-top:auto;width:100%;padding:9px 5px}
+.badge{
+  background:#eee8ff;color:#6941bd;border-radius:20px;
+  padding:4px 8px;font-size:11px;display:inline-block
+}
+.badge-low{background:#fff0d7;color:#925b00}
+.badge-out{background:#ffe5e5;color:#b42323}
+.cart-list{max-height:380px;overflow:auto}
+.cart-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-item:last-child{border-bottom:0}
+.cart-line{display:flex;justify-content:space-between;gap:9px}
+.cart-controls{display:flex;align-items:center;gap:8px;margin-top:9px}
+.qty-btn{border:1px solid var(--border);background:white;border-radius:6px;width:29px;height:29px}
+.muted{color:var(--muted)}
+.total-line{display:flex;justify-content:space-between;gap:12px;margin:12px 0}
+.grand-total{font-size:23px;font-weight:bold;color:var(--primary)}
+hr{border:0;border-top:1px solid var(--border);margin:16px 0}
 .table-wrap{overflow-x:auto}
-.danger{background:#fff0ed;color:#a52b1d}
-.secondary{background:#edf3ef;color:#24573c}
-.total{font-size:21px;font-weight:bold;color:var(--green)}
-.empty{padding:18px;text-align:center;color:#758078}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.hidden{display:none!important}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.stat strong{font-size:18px}main{padding:16px 4%}.panel{padding:13px}header{padding:20px 4%}}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left}
+th{font-size:11px;color:var(--muted);background:#faf9fc}
+td{font-size:13px}
+.empty{text-align:center;padding:28px;color:var(--muted)}
+.actions{display:flex;gap:6px}
+.actions .btn{padding:8px;font-size:12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.full{grid-column:1/-1}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{margin:0}
+.receipt{
+  background:white;color:#222;border:1px dashed #c8c2d2;
+  padding:18px;max-width:400px;margin:0 auto;font-family:monospace
+}
+.receipt h3,.receipt p.center{text-align:center}
+.receipt-row{display:flex;justify-content:space-between;gap:10px;margin:8px 0}
+.receipt small{overflow-wrap:anywhere}
+.notice{font-size:12px;color:var(--muted);line-height:1.6}
+.mobile-nav{display:none}
+#toast{
+  position:fixed;bottom:20px;right:20px;z-index:10;
+  background:#252136;color:white;padding:14px 18px;
+  border-radius:9px;box-shadow:0 4px 18px #0002;
+  display:none;max-width:90%
+}
+@media(max-width:1000px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-two{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  header{padding:13px 4%}
+  .layout{display:block}
+  .sidebar{display:none}
+  .content{padding:17px 4% 85px}
+  .page-title{font-size:22px}
+  .stats{gap:9px}
+  .stat{padding:13px}
+  .stat-value{font-size:18px}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .product{padding:9px}
+  .product-emoji{height:60px}
+  .card{padding:14px}
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:5;
+    background:white;border-top:1px solid var(--border);
+    justify-content:space-around;padding:8px 2px
+  }
+  .mobile-nav button{
+    border:0;background:transparent;color:#6c6379;
+    font-size:10px;padding:6px 3px;display:grid;gap:4px;justify-items:center
+  }
+  .mobile-nav button.active{color:var(--primary);font-weight:bold}
+  .mobile-nav span{font-size:19px}
+  .form-grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  #clock{display:none}
+}
 @media print{
-body{background:white;color:black}
-body *{visibility:hidden}
-#printArea,#printArea *{visibility:visible}
-#printArea{position:absolute;left:0;top:0;width:100%;padding:10px;font-size:12px}
-#printArea table{font-size:11px}
-.no-print{display:none!important}
+  body *{visibility:hidden!important}
+  #printReceipt,#printReceipt *{visibility:visible!important}
+  #printReceipt{
+    display:block!important;position:absolute;left:0;top:0;width:100%;
+    padding:0;border:0
+  }
+  #printReceipt .receipt{border:0;max-width:100%;padding:0}
+  .no-print{display:none!important}
 }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>🌿 Kasir Sembako</h1>
-  <p>Aplikasi penjualan dan stok toko</p>
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h1>StylePOS</h1>
+      <p>Fashion Store Management</p>
+    </div>
+  </div>
+  <div id="clock"></div>
 </header>
-<nav class="no-print">
-  <button class="active" data-tab="kasir">🛒 Kasir</button>
-  <button data-tab="stok">📦 Stok Barang</button>
-  <button data-tab="laporan">📊 Laporan</button>
-</nav>
-<main>
-<section id="kasir" class="tab">
+
+<div class="layout">
+<aside class="sidebar no-print">
+  <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+  <button class="nav-btn" data-page="kasir">🛍️ Kasir</button>
+  <button class="nav-btn" data-page="produk">👗 Produk & Stok</button>
+  <button class="nav-btn" data-page="laporan">📊 Laporan Penjualan</button>
+  <button class="nav-btn" data-page="pengaturan">⚙️ Pengaturan Toko</button>
+</aside>
+
+<main class="content">
+
+<section id="dashboard" class="page active">
+  <h2 class="page-title">Dashboard</h2>
+  <p class="subtitle">Ringkasan toko fashion kamu hari ini.</p>
   <div class="stats">
-    <div class="stat"><span>Produk tersedia</span><strong id="jumlahProduk">0</strong></div>
-    <div class="stat"><span>Transaksi hari ini</span><strong id="jumlahTransaksi">0</strong></div>
-    <div class="stat"><span>Penjualan hari ini</span><strong id="penjualanHari">Rp0</strong></div>
+    <div class="stat"><div class="stat-icon">💰</div><div class="stat-label">Omzet Hari Ini</div><div class="stat-value" id="dOmzet">Rp0</div></div>
+    <div class="stat"><div class="stat-icon">🧾</div><div class="stat-label">Transaksi Hari Ini</div><div class="stat-value" id="dTransaksi">0</div></div>
+    <div class="stat"><div class="stat-icon">👚</div><div class="stat-label">Jenis Produk</div><div class="stat-value" id="dProduk">0</div></div>
+    <div class="stat"><div class="stat-icon">📦</div><div class="stat-label">Total Stok</div><div class="stat-value" id="dStok">0</div></div>
   </div>
-  <div class="grid">
-    <div class="panel">
-      <h2>Daftar Barang</h2>
-      <input id="cariBarang" placeholder="Cari nama barang..." />
-      <div id="daftarKasir"></div>
+  <div class="grid-two">
+    <div class="card">
+      <div class="section-head"><h3>Transaksi Terbaru</h3><button class="btn btn-light" onclick="navigate('laporan')">Lihat Semua</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Waktu</th><th>Total</th></tr></thead><tbody id="recentSales"></tbody></table></div>
     </div>
-    <div class="panel">
-      <h2>Keranjang Belanja</h2>
-      <div id="keranjang"></div>
-      <hr style="border:0;border-top:1px solid #dfe7e1;margin:16px 0">
-      <div class="row"><span>Total belanja</span><strong id="total" class="total">Rp0</strong></div>
-      <label for="bayar">Uang pembayaran (Rp)</label>
-      <input id="bayar" type="number" min="0" placeholder="Masukkan uang pembeli">
-      <div class="row"><span>Kembalian</span><strong id="kembalian">Rp0</strong></div>
-      <button class="primary" style="width:100%;margin-top:14px" id="proses">Proses Pembayaran</button>
+    <div class="card">
+      <h3>⚠️ Stok Menipis</h3>
+      <div id="lowStock"></div>
     </div>
-  </div>
-  <div class="panel">
-    <h2>Struk Transaksi Terakhir</h2>
-    <div id="struk"><p class="empty">Struk akan tampil setelah pembayaran.</p></div>
-    <button class="secondary no-print" id="cetak">🖨️ Cetak Struk</button>
   </div>
 </section>
 
-<section id="stok" class="tab hidden">
-  <div class="panel">
-    <h2>Tambah Barang</h2>
-    <form id="formBarang">
-      <label for="nama">Nama barang</label>
-      <input id="nama" required placeholder="Contoh: Beras 5 kg">
-      <div class="grid">
-        <div><label for="harga">Harga jual (Rp)</label><input id="harga" type="number" min="1" required placeholder="75000"></div>
-        <div><label for="stokAwal">Jumlah stok</label><input id="stokAwal" type="number" min="0" required placeholder="10"></div>
+<section id="kasir" class="page">
+  <h2 class="page-title">Kasir Penjualan</h2>
+  <p class="subtitle">Pilih produk, varian ukuran dan warna, lalu proses pembayaran.</p>
+  <div class="grid-two">
+    <div class="card">
+      <div class="toolbar">
+        <input id="searchProduct" placeholder="Cari nama / kode produk...">
+        <select id="filterCategory"><option value="">Semua kategori</option></select>
       </div>
-      <button class="primary" type="submit">Tambah Barang</button>
+      <div id="posProducts" class="product-grid"></div>
+    </div>
+    <div class="card">
+      <div class="section-head"><h3>🛒 Keranjang</h3><button class="btn btn-light" onclick="clearCart()">Kosongkan</button></div>
+      <div id="cartList" class="cart-list"></div>
+      <hr>
+      <div class="total-line"><span>Subtotal</span><strong id="cartSubtotal">Rp0</strong></div>
+      <div class="field">
+        <label for="discount">Diskon transaksi (Rp)</label>
+        <input id="discount" type="number" min="0" value="0">
+      </div>
+      <div class="total-line"><span>Total Bayar</span><span class="grand-total" id="cartTotal">Rp0</span></div>
+      <div class="field"><label for="customer">Nama pelanggan (opsional)</label><input id="customer" placeholder="Nama pelanggan"></div>
+      <div class="field"><label for="paymentMethod">Metode pembayaran</label>
+        <select id="paymentMethod"><option>Tunai</option><option>Transfer Bank</option><option>QRIS</option><option>Debit</option></select>
+      </div>
+      <div class="field"><label for="paid">Uang diterima (Rp)</label><input id="paid" type="number" min="0" placeholder="Masukkan pembayaran"></div>
+      <div class="total-line"><span>Kembalian</span><strong id="change">Rp0</strong></div>
+      <button class="btn btn-primary" style="width:100%" onclick="checkout()">✓ Proses Pembayaran</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:17px">
+    <h3>Struk Transaksi Terakhir</h3>
+    <div id="lastReceipt"><div class="empty">Belum ada transaksi.</div></div>
+    <button class="btn btn-light no-print" style="margin-top:14px" onclick="printReceipt()">🖨️ Cetak Struk</button>
+  </div>
+</section>
+
+<section id="produk" class="page">
+  <h2 class="page-title">Produk & Stok</h2>
+  <p class="subtitle">Kelola pakaian, kode produk, harga, ukuran, warna dan stok.</p>
+  <div class="card">
+    <h3 id="productFormTitle">Tambah Produk Baru</h3>
+    <form id="productForm">
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="field"><label for="pName">Nama produk *</label><input id="pName" required placeholder="Contoh: Kaos Oversize"></div>
+        <div class="field"><label for="pCode">Kode produk / SKU *</label><input id="pCode" required placeholder="Contoh: KAO001"></div>
+        <div class="field"><label for="pCategory">Kategori *</label>
+          <select id="pCategory" required>
+            <option value="Atasan">Atasan</option><option value="Bawahan">Bawahan</option>
+            <option value="Dress">Dress</option><option value="Outer">Outer / Jaket</option>
+            <option value="Hijab">Hijab</option><option value="Sepatu">Sepatu</option>
+            <option value="Tas">Tas</option><option value="Aksesori">Aksesori</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="field"><label for="pPrice">Harga jual (Rp) *</label><input id="pPrice" type="number" min="1" required placeholder="150000"></div>
+        <div class="field"><label for="pCost">Harga modal (Rp)</label><input id="pCost" type="number" min="0" value="0" placeholder="80000"></div>
+        <div class="field"><label for="pStock">Stok awal *</label><input id="pStock" type="number" min="0" required placeholder="10"></div>
+        <div class="field"><label for="pSize">Ukuran *</label><input id="pSize" required placeholder="S, M, L, XL"></div>
+        <div class="field"><label for="pColor">Warna *</label><input id="pColor" required placeholder="Hitam, Putih"></div>
+        <div class="field full"><label for="pEmoji">Ikon produk</label>
+          <select id="pEmoji"><option>👕</option><option>👖</option><option>👗</option><option>🧥</option><option>🧕</option><option>👟</option><option>👜</option><option>🧢</option><option>🧦</option></select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" type="submit" id="saveProductBtn">Simpan Produk</button>
+        <button class="btn btn-light" type="button" onclick="resetProductForm()">Batal</button>
+      </div>
     </form>
   </div>
-  <div class="panel">
-    <h2>Daftar Stok Barang</h2>
-    <div class="table-wrap">
-      <table><thead><tr><th>Barang</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="tabelStok"></tbody></table>
-    </div>
+  <div class="card" style="margin-top:17px">
+    <div class="section-head"><h3>Daftar Produk</h3><input id="stockSearch" style="max-width:260px" placeholder="Cari produk..."></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Kode</th><th>Produk</th><th>Kategori</th><th>Ukuran</th><th>Warna</th><th>Harga</th><th>Modal</th><th>Stok</th><th>Aksi</th></tr></thead>
+      <tbody id="stockTable"></tbody>
+    </table></div>
   </div>
 </section>
 
-<section id="laporan" class="tab hidden">
+<section id="laporan" class="page">
+  <h2 class="page-title">Laporan Penjualan</h2>
+  <p class="subtitle">Pantau omzet, jumlah produk terjual dan estimasi laba kotor.</p>
+  <div class="toolbar">
+    <div><label for="dateFrom">Dari tanggal</label><input id="dateFrom" type="date"></div>
+    <div><label for="dateTo">Sampai tanggal</label><input id="dateTo" type="date"></div>
+    <button class="btn btn-primary" style="align-self:end" onclick="renderReports()">Tampilkan</button>
+    <button class="btn btn-light" style="align-self:end" onclick="resetReportDates()">Semua Tanggal</button>
+  </div>
   <div class="stats">
-    <div class="stat"><span>Total semua transaksi</span><strong id="totalTransaksi">0</strong></div>
-    <div class="stat"><span>Total penjualan</span><strong id="totalPenjualan">Rp0</strong></div>
-    <div class="stat"><span>Barang terjual</span><strong id="barangTerjual">0</strong></div>
+    <div class="stat"><div class="stat-label">Jumlah Transaksi</div><div class="stat-value" id="rCount">0</div></div>
+    <div class="stat"><div class="stat-label">Omzet Bersih*</div><div class="stat-value" id="rRevenue">Rp0</div></div>
+    <div class="stat"><div class="stat-label">Estimasi Laba Kotor</div><div class="stat-value" id="rProfit">Rp0</div></div>
+    <div class="stat"><div class="stat-label">Unit Terjual</div><div class="stat-value" id="rUnits">0</div></div>
   </div>
-  <div class="panel">
-    <h2>Riwayat Penjualan</h2>
-    <div class="table-wrap">
-      <table><thead><tr><th>Waktu</th><th>No. Struk</th><th>Jumlah item</th><th>Total</th></tr></thead><tbody id="tabelLaporan"></tbody></table>
-    </div>
-    <p id="kosongLaporan" class="empty hidden">Belum ada transaksi.</p>
-    <button id="ekspor" class="secondary">Unduh Laporan CSV</button>
+  <div class="card">
+    <div class="section-head"><h3>Riwayat Transaksi</h3><button class="btn btn-primary" onclick="exportCSV()">⬇ Unduh CSV</button></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Waktu</th><th>No. Transaksi</th><th>Pelanggan</th><th>Metode</th><th>Unit</th><th>Total</th><th>Aksi</th></tr></thead>
+      <tbody id="reportTable"></tbody>
+    </table></div>
+    <p class="notice">*Omzet bersih di sini berarti total penjualan setelah diskon transaksi, bukan laba bersih. Estimasi laba kotor dihitung dari harga jual dikurangi modal yang tercatat saat transaksi.</p>
   </div>
 </section>
-</main>
-<div id="printArea" style="display:none"></div>
-<script>
-const rupiah = n => new Intl.NumberFormat("id-ID",{
-  style:"currency",currency:"IDR",maximumFractionDigits:0
-}).format(n);
 
-const contohBarang = [
-  {id:1,nama:"Beras 5 kg",harga:75000,stok:20},
-  {id:2,nama:"Minyak Goreng 1 L",harga:18000,stok:30},
-  {id:3,nama:"Gula Pasir 1 kg",harga:17000,stok:25},
-  {id:4,nama:"Telur 1 kg",harga:29000,stok:15},
-  {id:5,nama:"Mi Instan",harga:3500,stok:100},
-  {id:6,nama:"Air Mineral",harga:4000,stok:40}
+<section id="pengaturan" class="page">
+  <h2 class="page-title">Pengaturan Toko</h2>
+  <p class="subtitle">Atur nama toko yang akan ditampilkan di struk.</p>
+  <div class="card">
+    <form id="settingsForm">
+      <div class="field"><label for="storeName">Nama toko</label><input id="storeName" required placeholder="Nama Toko Fashion"></div>
+      <div class="field"><label for="storeAddress">Alamat toko</label><input id="storeAddress" placeholder="Alamat toko"></div>
+      <div class="field"><label for="storePhone">Nomor telepon</label><input id="storePhone" placeholder="Nomor telepon toko"></div>
+      <button class="btn btn-primary">Simpan Pengaturan</button>
+    </form>
+  </div>
+  <div class="card" style="margin-top:17px">
+    <h3>Cadangan Data</h3>
+    <p class="notice">Unduh file JSON untuk menyimpan cadangan produk, stok, pengaturan, dan riwayat transaksi. Simpan file tersebut di tempat aman.</p>
+    <div class="actions" style="flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="backupData()">⬇ Cadangkan Data</button>
+      <label class="btn btn-light" style="cursor:pointer">⬆ Pulihkan Data JSON<input type="file" id="restoreFile" accept=".json,application/json" hidden></label>
+    </div>
+    <hr>
+    <h3>Reset Data</h3>
+    <p class="notice">Reset akan menghapus data aplikasi dari browser ini. Pastikan sudah membuat cadangan jika diperlukan.</p>
+    <button class="btn btn-danger" onclick="resetAll()">Hapus Semua Data</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<nav class="mobile-nav no-print">
+  <button class="active" data-page="dashboard"><span>🏠</span>Dashboard</button>
+  <button data-page="kasir"><span>🛍️</span>Kasir</button>
+  <button data-page="produk"><span>👗</span>Produk</button>
+  <button data-page="laporan"><span>📊</span>Laporan</button>
+  <button data-page="pengaturan"><span>⚙️</span>Pengaturan</button>
+</nav>
+
+<div id="printReceipt" style="display:none"></div>
+<div id="toast" role="status"></div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const money = n => new Intl.NumberFormat("id-ID",{
+  style:"currency",currency:"IDR",maximumFractionDigits:0
+}).format(Number(n)||0);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+})[c]);
+
+const sampleProducts = [
+ {id:"p1",code:"AT001",name:"Kaos Oversize",category:"Atasan",price:85000,cost:45000,emoji:"👕",variants:[{size:"M",color:"Hitam",stock:8},{size:"L",color:"Hitam",stock:10},{size:"M",color:"Putih",stock:6}]},
+ {id:"p2",code:"BW001",name:"Celana Jeans",category:"Bawahan",price:175000,cost:95000,emoji:"👖",variants:[{size:"M",color:"Biru",stock:5},{size:"L",color:"Biru",stock:7}]},
+ {id:"p3",code:"DR001",name:"Dress Casual",category:"Dress",price:210000,cost:120000,emoji:"👗",variants:[{size:"S",color:"Hitam",stock:4},{size:"M",color:"Hitam",stock:5}]},
+ {id:"p4",code:"OT001",name:"Jaket Denim",category:"Outer",price:250000,cost:150000,emoji:"🧥",variants:[{size:"L",color:"Biru",stock:3}]},
+ {id:"p5",code:"HJ001",name:"Hijab Polos",category:"Hijab",price:45000,cost:20000,emoji:"🧕",variants:[{size:"All Size",color:"Cream",stock:15},{size:"All Size",color:"Hitam",stock:15}]},
+ {id:"p6",code:"TS001",name:"Tas Selempang",category:"Tas",price:135000,cost:70000,emoji:"👜",variants:[{size:"All Size",color:"Cokelat",stock:4},{size:"All Size",color:"Hitam",stock:6}]}
 ];
 
-function baca(kunci,awal){
-  try{
-    const data=localStorage.getItem(kunci);
-    return data===null ? awal : JSON.parse(data);
-  }catch(e){return awal}
+function readStore(key,fallback){
+ try{
+  const value=localStorage.getItem(key);
+  return value===null?fallback:JSON.parse(value);
+ }catch(e){return fallback}
 }
-let barang=baca("sembako_barang",contohBarang);
-let transaksi=baca("sembako_transaksi",[]);
-let keranjang=[];
-let strukTerakhir=null;
-
-function simpan(){
-  localStorage.setItem("sembako_barang",JSON.stringify(barang));
-  localStorage.setItem("sembako_transaksi",JSON.stringify(transaksi));
-}
-function aman(teks){
-  return String(teks).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
-}
-function totalKeranjang(){
-  return keranjang.reduce((s,item)=>{
-    const b=barang.find(x=>x.id===item.id);
-    return s+(b?b.harga*item.qty:0);
-  },0);
-}
-function renderKasir(){
-  const cari=document.getElementById("cariBarang").value.toLowerCase();
-  const tersedia=barang.filter(b=>b.nama.toLowerCase().includes(cari));
-  document.getElementById("daftarKasir").innerHTML=tersedia.length
-    ? tersedia.map(b=>`<div class="product">
-      <div class="row"><strong>${aman(b.nama)}</strong><span class="small">Stok: ${b.stok}</span></div>
-      <div>${rupiah(b.harga)}</div>
-      <button class="secondary" ${b.stok<=0?"disabled":""} onclick="tambah(${b.id})">+ Tambah</button>
-    </div>`).join("")
-    : '<p class="empty">Barang tidak ditemukan.</p>';
-
-  document.getElementById("keranjang").innerHTML=keranjang.length
-    ? keranjang.map(i=>{
-      const b=barang.find(x=>x.id===i.id);
-      if(!b)return "";
-      return `<div class="product">
-       <strong>${aman(b.nama)}</strong>
-       <div class="row" style="margin-top:8px">
-        <span>${rupiah(b.harga)} × ${i.qty}</span>
-        <div class="actions">
-         <button class="secondary" onclick="ubahQty(${b.id},-1)">−</button>
-         <button class="secondary" onclick="ubahQty(${b.id},1)">+</button>
-         <button class="danger" onclick="hapusKeranjang(${b.id})">Hapus</button>
-        </div>
-       </div>
-       <p style="margin-bottom:0">${rupiah(b.harga*i.qty)}</p>
-      </div>`;
-    }).join("")
-    : '<p class="empty">Keranjang masih kosong.</p>';
-
-  document.getElementById("total").textContent=rupiah(totalKeranjang());
-  hitungKembalian();
-}
-function tambah(id){
-  const b=barang.find(x=>x.id===id);
-  if(!b||b.stok<=0)return alert("Stok barang habis.");
-  const item=keranjang.find(x=>x.id===id);
-  if(item){
-    if(item.qty>=b.stok)return alert("Jumlah melebihi stok.");
-    item.qty++;
-  }else keranjang.push({id,qty:1});
-  renderKasir();
-}
-function ubahQty(id,selisih){
-  const item=keranjang.find(x=>x.id===id);
-  const b=barang.find(x=>x.id===id);
-  if(!item||!b)return;
-  if(item.qty+selisih<=0)return hapusKeranjang(id);
-  if(item.qty+selisih>b.stok)return alert("Jumlah melebihi stok.");
-  item.qty+=selisih;
-  renderKasir();
-}
-function hapusKeranjang(id){
-  keranjang=keranjang.filter(x=>x.id!==id);
-  renderKasir();
-}
-function hitungKembalian(){
-  const bayar=Number(document.getElementById("bayar").value)||0;
-  document.getElementById("kembalian").textContent=
-    rupiah(Math.max(0,bayar-totalKeranjang()));
-}
-function hariIni(tanggal){
-  const d=new Date(tanggal);
-  const sekarang=new Date();
-  return d.getFullYear()===sekarang.getFullYear()&&
-    d.getMonth()===sekarang.getMonth()&&
-    d.getDate()===sekarang.getDate();
-}
-function renderSemua(){
-  renderKasir();
-  document.getElementById("jumlahProduk").textContent=barang.length;
-  const hari=transaksi.filter(t=>hariIni(t.waktu));
-  document.getElementById("jumlahTransaksi").textContent=hari.length;
-  document.getElementById("penjualanHari").textContent=
-    rupiah(hari.reduce((s,t)=>s+t.total,0));
-
-  document.getElementById("tabelStok").innerHTML=barang.map(b=>
-    `<tr><td>${aman(b.nama)}</td><td>${rupiah(b.harga)}</td>
-    <td>${b.stok}</td><td><div class="actions">
-    <button class="secondary" onclick="editBarang(${b.id})">Edit</button>
-    <button class="danger" onclick="hapusBarang(${b.id})">Hapus</button>
-    </div></td></tr>`).join("")||
-    '<tr><td colspan="4">Belum ada barang.</td></tr>';
-
-  document.getElementById("totalTransaksi").textContent=transaksi.length;
-  document.getElementById("totalPenjualan").textContent=
-    rupiah(transaksi.reduce((s,t)=>s+t.total,0));
-  document.getElementById("barangTerjual").textContent=
-    transaksi.reduce((s,t)=>s+t.items.reduce((n,i)=>n+i.qty,0),0);
-  document.getElementById("tabelLaporan").innerHTML=transaksi.slice().reverse().map(t=>
-    `<tr><td>${new Date(t.waktu).toLocaleString("id-ID")}</td>
-    <td>${aman(t.nomor)}</td><td>${t.items.reduce((s,i)=>s+i.qty,0)}</td>
-    <td>${rupiah(t.total)}</td></tr>`).join("");
-  document.getElementById("kosongLaporan").classList.toggle("hidden",transaksi.length>0);
-}
-function editBarang(id){
-  const b=barang.find(x=>x.id===id);
-  if(!b)return;
-  const nama=prompt("Nama barang:",b.nama);
-  if(nama===null)return;
-  if(!nama.trim())return alert("Nama tidak boleh kosong.");
-  const harga=prompt("Harga jual (Rp):",b.harga);
-  if(harga===null)return;
-  const stok=prompt("Jumlah stok:",b.stok);
-  if(stok===null)return;
-  if(!Number.isFinite(Number(harga))||Number(harga)<=0||
-     !Number.isInteger(Number(stok))||Number(stok)<0)
-    return alert("Harga atau stok tidak valid.");
-  b.nama=nama.trim();b.harga=Number(harga);b.stok=Number(stok);
-  simpan();renderSemua();
-}
-function hapusBarang(id){
-  const b=barang.find(x=>x.id===id);
-  if(!b||!confirm("Hapus "+b.nama+"?"))return;
-  barang=barang.filter(x=>x.id!==id);
-  keranjang=keranjang.filter(x=>x.id!==id);
-  simpan();renderSemua();
-}
-document.getElementById("formBarang").addEventListener("submit",e=>{
-  e.preventDefault();
-  const nama=document.getElementById("nama").value.trim();
-  const harga=Number(document.getElementById("harga").value);
-  const stok=Number(document.getElementById("stokAwal").value);
-  if(!nama||harga<=0||!Number.isFinite(harga)||
-     !Number.isInteger(stok)||stok<0)return alert("Periksa data barang.");
-  barang.push({id:Date.now(),nama,harga,stok});
-  simpan();e.target.reset();renderSemua();
-  alert("Barang berhasil ditambahkan.");
+let products=readStore("stylepos_products",sampleProducts);
+let sales=readStore("stylepos_sales",[]);
+let settings=readStore("stylepos_settings",{
+ name:"Style Fashion Store",address:"",phone:""
 });
-document.getElementById("cariBarang").addEventListener("input",renderKasir);
-document.getElementById("bayar").addEventListener("input",hitungKembalian);
+let cart=[];
+let lastSale=null;
+let toastTimer;
 
-document.getElementById("proses").addEventListener("click",()=>{
-  const total=totalKeranjang();
-  const bayar=Number(document.getElementById("bayar").value);
-  if(!keranjang.length)return alert("Keranjang masih kosong.");
-  if(!Number.isFinite(bayar)||bayar<total)
-    return alert("Uang pembayaran kurang atau belum diisi.");
-  for(const i of keranjang){
-    const b=barang.find(x=>x.id===i.id);
-    if(!b||b.stok<i.qty)return alert("Stok "+(b?b.nama:"barang")+" tidak cukup.");
-  }
-  const items=keranjang.map(i=>{
-    const b=barang.find(x=>x.id===i.id);
-    return {nama:b.nama,harga:b.harga,qty:i.qty};
-  });
-  const t={
-    nomor:"TRX-"+Date.now(),
-    waktu:new Date().toISOString(),
-    items,total,bayar,kembalian:bayar-total
-  };
-  keranjang.forEach(i=>{
-    barang.find(x=>x.id===i.id).stok-=i.qty;
-  });
-  transaksi.push(t);
-  strukTerakhir=t;
-  keranjang=[];
-  document.getElementById("bayar").value="";
-  simpan();renderSemua();tampilkanStruk(t);
-  alert("Pembayaran berhasil!");
-});
-function tampilkanStruk(t){
-  const isi=`<div style="max-width:360px;margin:auto;font-family:monospace;color:black">
-    <h3 style="text-align:center">TOKO SEMBAKO</h3>
-    <p style="text-align:center">Terima kasih sudah berbelanja</p>
-    <hr>
-    <p>No: ${aman(t.nomor)}<br>${new Date(t.waktu).toLocaleString("id-ID")}</p>
-    <hr>
-    ${t.items.map(i=>`<p>${aman(i.nama)}<br>${i.qty} x ${rupiah(i.harga)}
-    <span style="float:right">${rupiah(i.qty*i.harga)}</span></p>`).join("")}
-    <hr>
-    <p>Total: <b style="float:right">${rupiah(t.total)}</b></p>
-    <p>Bayar: <span style="float:right">${rupiah(t.bayar)}</span></p>
-    <p>Kembali: <span style="float:right">${rupiah(t.kembalian)}</span></p>
-    <hr><p style="text-align:center">Barang yang sudah dibeli<br>terima kasih</p>
+function save(){
+ localStorage.setItem("stylepos_products",JSON.stringify(products));
+ localStorage.setItem("stylepos_sales",JSON.stringify(sales));
+ localStorage.setItem("stylepos_settings",JSON.stringify(settings));
+}
+function notify(message){
+ $("toast").textContent=message;
+ $("toast").style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>$("toast").style.display="none",2600);
+}
+function totalStock(p){
+ return p.variants.reduce((n,v)=>n+v.stock,0);
+}
+function variantLabel(v){
+ return v.size+" / "+v.color;
+}
+function navigate(page){
+ document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===page));
+ document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+ if(page==="kasir")renderPOS();
+ if(page==="produk")renderStock();
+ if(page==="laporan")renderReports();
+ if(page==="dashboard")renderDashboard();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
+
+function renderCategoryFilter(){
+ const select=$("filterCategory");
+ const old=select.value;
+ const cats=[...new Set(products.map(p=>p.category))].sort();
+ select.innerHTML='<option value="">Semua kategori</option>'+
+ cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+ if(cats.includes(old))select.value=old;
+}
+function renderPOS(){
+ renderCategoryFilter();
+ const query=$("searchProduct").value.toLowerCase().trim();
+ const category=$("filterCategory").value;
+ const shown=products.filter(p=>
+  (!category||p.category===category)&&
+  (p.name+" "+p.code+" "+p.category).toLowerCase().includes(query)
+ );
+ $("posProducts").innerHTML=shown.length?shown.map(p=>{
+  const stock=totalStock(p);
+  return `<div class="product">
+   <div class="product-emoji">${esc(p.emoji)}</div>
+   <div class="product-name">${esc(p.name)}</div>
+   <div class="product-meta">${esc(p.code)} · ${esc(p.category)}</div>
+   <div class="price">${money(p.price)}</div>
+   <div class="product-meta">${stock} unit tersedia</div>
+   <button class="btn btn-primary" ${stock===0?"disabled":""} onclick="chooseVariant('${p.id}')">+ Pilih Varian</button>
   </div>`;
-  document.getElementById("struk").innerHTML=isi;
-  document.getElementById("printArea").innerHTML=isi;
+ }).join(""):'<div class="empty" style="grid-column:1/-1">Produk tidak ditemukan.</div>';
+ renderCart();
 }
-document.getElementById("cetak").addEventListener("click",()=>{
-  if(!strukTerakhir)return alert("Belum ada struk untuk dicetak.");
-  document.getElementById("printArea").style.display="block";
-  window.print();
-  document.getElementById("printArea").style.display="none";
+function chooseVariant(id){
+ const p=products.find(x=>x.id===id);
+ if(!p)return;
+ const available=p.variants.filter(v=>v.stock>0);
+ if(!available.length)return notify("Stok produk habis.");
+ const choices=available.map((v,i)=>`${i+1}. ${variantLabel(v)} (stok ${v.stock})`).join("\n");
+ const answer=prompt("Pilih ukuran dan warna:\n"+choices+"\nMasukkan nomor pilihan:");
+ if(answer===null)return;
+ const index=Number(answer)-1;
+ if(!Number.isInteger(index)||index<0||index>=available.length)return notify("Pilihan tidak valid.");
+ addToCart(p.id,available[index].size,available[index].color);
+}
+function addToCart(id,size,color){
+ const p=products.find(x=>x.id===id);
+ const v=p?.variants.find(x=>x.size===size&&x.color===color);
+ if(!p||!v||v.stock<=0)return notify("Varian tidak tersedia.");
+ const item=cart.find(x=>x.productId===id&&x.size===size&&x.color===color);
+ if(item){
+  if(item.qty>=v.stock)return notify("Jumlah melebihi stok.");
+  item.qty++;
+ }else cart.push({productId:id,size,color,qty:1});
+ renderCart();
+ notify("Produk ditambahkan ke keranjang.");
+}
+function cartSubtotal(){
+ return cart.reduce((sum,i)=>{
+  const p=products.find(x=>x.id===i.productId);
+  return sum+(p?p.price*i.qty:0);
+ },0);
+}
+function cartDiscount(){
+ const value=Number($("discount").value)||0;
+ return Math.max(0,Math.min(value,cartSubtotal()));
+}
+function cartTotal(){
+ return cartSubtotal()-cartDiscount();
+}
+function renderCart(){
+ $("cartList").innerHTML=cart.length?cart.map((i,index)=>{
+  const p=products.find(x=>x.id===i.productId);
+  if(!p)return "";
+  return `<div class="cart-item">
+   <div class="cart-line"><strong>${esc(p.name)}</strong><strong>${money(p.price*i.qty)}</strong></div>
+   <div class="product-meta">${esc(variantLabel(i))} · ${money(p.price)} / unit</div>
+   <div class="cart-controls">
+    <button class="qty-btn" onclick="changeQty(${index},-1)">−</button>
+    <strong>${i.qty}</strong>
+    <button class="qty-btn" onclick="changeQty(${index},1)">+</button>
+    <button class="btn btn-danger" style="margin-left:auto;padding:7px" onclick="removeCart(${index})">Hapus</button>
+   </div>
+  </div>`;
+ }).join(""):'<div class="empty">Keranjang masih kosong.</div>';
+ $("cartSubtotal").textContent=money(cartSubtotal());
+ $("cartTotal").textContent=money(cartTotal());
+ updateChange();
+}
+function changeQty(index,delta){
+ const i=cart[index];
+ if(!i)return;
+ const p=products.find(x=>x.id===i.productId);
+ const v=p?.variants.find(x=>x.size===i.size&&x.color===i.color);
+ if(!v)return;
+ if(i.qty+delta<1)return removeCart(index);
+ if(i.qty+delta>v.stock)return notify("Stok varian tidak mencukupi.");
+ i.qty+=delta;
+ renderCart();
+}
+function removeCart(index){
+ cart.splice(index,1);
+ renderCart();
+}
+function clearCart(){
+ if(!cart.length)return;
+ if(!confirm("Kosongkan keranjang belanja?"))return;
+ cart=[];
+ $("discount").value=0;
+ $("paid").value="";
+ renderCart();
+}
+function updateChange(){
+ const paid=Number($("paid").value)||0;
+ const change=paid-cartTotal();
+ $("change").textContent=money(Math.max(0,change));
+}
+$("searchProduct").addEventListener("input",renderPOS);
+$("filterCategory").addEventListener("change",renderPOS);
+$("discount").addEventListener("input",()=>{renderCart()});
+$("paid").addEventListener("input",updateChange);
+
+function checkout(){
+ if(!cart.length)return notify("Keranjang masih kosong.");
+ const total=cartTotal();
+ const paid=Number($("paid").value);
+ if(!Number.isFinite(paid)||paid<total)return notify("Pembayaran kurang atau belum diisi.");
+ for(const i of cart){
+  const p=products.find(x=>x.id===i.productId);
+  const v=p?.variants.find(x=>x.size===i.size&&x.color===i.color);
+  if(!v||v.stock<i.qty)return notify("Stok "+(p?.name||"produk")+" tidak cukup.");
+ }
+ const items=cart.map(i=>{
+  const p=products.find(x=>x.id===i.productId);
+  return {
+   productId:p.id,code:p.code,name:p.name,category:p.category,
+   size:i.size,color:i.color,qty:i.qty,price:p.price,cost:p.cost||0
+  };
+ });
+ const now=new Date();
+ const sale={
+  id:"TRX-"+now.getTime(),
+  time:now.toISOString(),
+  customer:$("customer").value.trim(),
+  method:$("paymentMethod").value,
+  items,
+  subtotal:cartSubtotal(),
+  discount:cartDiscount(),
+  total,
+  paid,
+  change:paid-total,
+  profit:items.reduce((sum,i)=>sum+(i.price-i.cost)*i.qty,0)-cartDiscount()
+ };
+ cart.forEach(i=>{
+  const p=products.find(x=>x.id===i.productId);
+  const v=p.variants.find(x=>x.size===i.size&&x.color===i.color);
+  v.stock-=i.qty;
+ });
+ sales.push(sale);
+ lastSale=sale;
+ cart=[];
+ $("paid").value="";
+ $("discount").value=0;
+ $("customer").value="";
+ save();
+ renderPOS();
+ renderStock();
+ renderDashboard();
+ renderReports();
+ showReceipt(sale);
+ notify("Transaksi berhasil disimpan!");
+}
+function receiptHTML(s){
+ const date=new Date(s.time).toLocaleString("id-ID");
+ return `<div class="receipt">
+  <h3>${esc(settings.name)}</h3>
+  <p class="center">${esc(settings.address||"")}${settings.phone?"<br>Telp: "+esc(settings.phone):""}</p>
+  <hr>
+  <small>No: ${esc(s.id)}<br>${esc(date)}<br>Pelanggan: ${esc(s.customer||"Umum")}</small>
+  <hr>
+  ${s.items.map(i=>`<div style="margin:10px 0">
+   <strong>${esc(i.name)}</strong><br>
+   <small>${esc(i.code)} · ${esc(variantLabel(i))}</small>
+   <div class="receipt-row"><span>${i.qty} x ${money(i.price)}</span><span>${money(i.qty*i.price)}</span></div>
+  </div>`).join("")}
+  <hr>
+  <div class="receipt-row"><span>Subtotal</span><span>${money(s.subtotal)}</span></div>
+  <div class="receipt-row"><span>Diskon</span><span>-${money(s.discount)}</span></div>
+  <div class="receipt-row"><strong>Total</strong><strong>${money(s.total)}</strong></div>
+  <div class="receipt-row"><span>Metode</span><span>${esc(s.method)}</span></div>
+  <div class="receipt-row"><span>Bayar</span><span>${money(s.paid)}</span></div>
+  <div class="receipt-row"><span>Kembalian</span><span>${money(s.change)}</span></div>
+  <hr><p class="center">Terima kasih telah berbelanja!<br>Barang yang sudah dibeli.</p>
+ </div>`;
+}
+function showReceipt(s){
+ $("lastReceipt").innerHTML=receiptHTML(s);
+ $("printReceipt").innerHTML=receiptHTML(s);
+}
+function printReceipt(){
+ if(!lastSale)return notify("Belum ada struk transaksi.");
+ $("printReceipt").style.display="block";
+ window.print();
+ $("printReceipt").style.display="none";
+}
+
+function renderStock(){
+ const q=$("stockSearch").value.toLowerCase().trim();
+ const list=products.filter(p=>(p.name+" "+p.code+" "+p.category).toLowerCase().includes(q));
+ $("stockTable").innerHTML=list.length?list.map(p=>`
+ <tr>
+  <td>${esc(p.code)}</td><td>${esc(p.emoji)} ${esc(p.name)}</td>
+  <td>${esc(p.category)}</td>
+  <td>${esc([...new Set(p.variants.map(v=>v.size))].join(", "))}</td>
+  <td>${esc([...new Set(p.variants.map(v=>v.color))].join(", "))}</td>
+  <td>${money(p.price)}</td><td>${money(p.cost||0)}</td>
+  <td><span class="badge ${totalStock(p)===0?"badge-out":totalStock(p)<=5?"badge-low":""}">${totalStock(p)}</span></td>
+  <td><div class="actions">
+   <button class="btn btn-light" onclick="editProduct('${p.id}')">Edit</button>
+   <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Hapus</button>
+  </div></td>
+ </tr>`).join(""):'<tr><td colspan="9" class="empty">Produk belum tersedia.</td></tr>';
+}
+$("stockSearch").addEventListener("input",renderStock);
+
+function resetProductForm(){
+ $("productForm").reset();
+ $("editId").value="";
+ $("productFormTitle").textContent="Tambah Produk Baru";
+ $("saveProductBtn").textContent="Simpan Produk";
+ $("pCost").value=0;
+}
+function editProduct(id){
+ const p=products.find(x=>x.id===id);
+ if(!p)return;
+ $("editId").value=p.id;
+ $("pName").value=p.name;
+ $("pCode").value=p.code;
+ $("pCategory").value=p.category;
+ $("pPrice").value=p.price;
+ $("pCost").value=p.cost||0;
+ $("pStock").value=totalStock(p);
+ $("pSize").value=[...new Set(p.variants.map(v=>v.size))].join(", ");
+ $("pColor").value=[...new Set(p.variants.map(v=>v.color))].join(", ");
+ $("pEmoji").value=p.emoji;
+ $("productFormTitle").textContent="Edit Produk";
+ $("saveProductBtn").textContent="Simpan Perubahan";
+ $("productForm").scrollIntoView({behavior:"smooth"});
+}
+$("productForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const id=$("editId").value;
+ const name=$("pName").value.trim();
+ const code=$("pCode").value.trim();
+ const category=$("pCategory").value;
+ const price=Number($("pPrice").value);
+ const cost=Number($("pCost").value);
+ const stock=Number($("pStock").value);
+ const sizes=[...new Set($("pSize").value.split(",").map(x=>x.trim()).filter(Boolean))];
+ const colors=[...new Set($("pColor").value.split(",").map(x=>x.trim()).filter(Boolean))];
+ if(!name||!code||!sizes.length||!colors.length||!Number.isFinite(price)||price<=0||!Number.isFinite(cost)||cost<0||!Number.isInteger(stock)||stock<0)
+  return notify("Periksa kembali data produk.");
+ if(products.some(p=>p.code.toLowerCase()===code.toLowerCase()&&p.id!==id))
+  return notify("Kode produk sudah digunakan.");
+ let product;
+ if(id){
+  product=products.find(p=>p.id===id);
+  if(!product)return notify("Produk tidak ditemukan.");
+  const oldVariants=product.variants;
+  const newVariants=[];
+  for(const size of sizes)for(const color of colors){
+   const old=oldVariants.find(v=>v.size===size&&v.color===color);
+   newVariants.push({size,color,stock:old?old.stock:0});
+  }
+  const oldTotal=oldVariants.reduce((n,v)=>n+v.stock,0);
+  const newTotal=newVariants.reduce((n,v)=>n+v.stock,0);
+  if(stock!==oldTotal){
+   if(!confirm("Stok saat ini "+oldTotal+". Atur total stok menjadi "+stock+"? Varian baru akan dibuat dengan stok 0."))return;
+   if(newTotal>0){
+    let remaining=stock;
+    newVariants.forEach((v,index)=>{
+     if(index===newVariants.length-1)v.stock=remaining;
+     else{
+      const allocation=Math.min(v.stock,remaining);
+      v.stock=allocation;
+      remaining-=allocation;
+     }
+    });
+   }else if(newVariants.length)newVariants[0].stock=stock;
+  }
+  Object.assign(product,{code,name,category,price,cost,emoji:$("pEmoji").value,variants:newVariants});
+ }else{
+  product={id:"P"+Date.now(),code,name,category,price,cost,emoji:$("pEmoji").value,
+   variants:[{size:sizes[0],color:colors[0],stock}]};
+  if(sizes.length*colors.length>1){
+   product.variants=[];
+   let remaining=stock;
+   for(const size of sizes)for(const color of colors){
+    product.variants.push({size,color,stock:remaining});
+    remaining=0;
+   }
+  }
+  products.push(product);
+ }
+ save();resetProductForm();renderStock();renderPOS();renderDashboard();
+ notify("Produk berhasil disimpan.");
 });
-document.querySelectorAll("nav button").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    document.querySelectorAll(".tab").forEach(s=>s.classList.add("hidden"));
-    document.getElementById(btn.dataset.tab).classList.remove("hidden");
-    renderSemua();
-  });
+function deleteProduct(id){
+ const p=products.find(x=>x.id===id);
+ if(!p||!confirm("Hapus produk "+p.name+"?"))return;
+ if(cart.some(i=>i.productId===id))return notify("Hapus produk dari keranjang terlebih dahulu.");
+ products=products.filter(x=>x.id!==id);
+ save();renderStock();renderPOS();renderDashboard();
+ notify("Produk dihapus.");
+}
+
+function sameDay(a,b){
+ const x=new Date(a),y=new Date(b);
+ return x.getFullYear()===y.getFullYear()&&x.getMonth()===y.getMonth()&&x.getDate()===y.getDate();
+}
+function renderDashboard(){
+ const today=sales.filter(s=>sameDay(s.time,new Date()));
+ $("dOmzet").textContent=money(today.reduce((n,s)=>n+s.total,0));
+ $("dTransaksi").textContent=today.length;
+ $("dProduk").textContent=products.length;
+ $("dStok").textContent=products.reduce((n,p)=>n+totalStock(p),0);
+ $("recentSales").innerHTML=sales.length?sales.slice(-5).reverse().map(s=>`
+ <tr><td>${esc(s.id)}</td><td>${new Date(s.time).toLocaleString("id-ID")}</td><td>${money(s.total)}</td></tr>`
+ ).join(""):'<tr><td colspan="3" class="empty">Belum ada transaksi.</td></tr>';
+ const low=products.filter(p=>totalStock(p)<=5);
+ $("lowStock").innerHTML=low.length?low.map(p=>`
+ <div class="total-line"><span>${esc(p.name)}</span><span class="badge ${totalStock(p)===0?"badge-out":"badge-low"}">${totalStock(p)} unit</span></div>`
+ ).join(""):'<p class="muted">Semua produk memiliki stok lebih dari 5 unit.</p>';
+}
+function getFilteredSales(){
+ const from=$("dateFrom").value;
+ const to=$("dateTo").value;
+ return sales.filter(s=>{
+  const d=new Date(s.time);
+  const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  return (!from||key>=from)&&(!to||key<=to);
+ });
+}
+function renderReports(){
+ const list=getFilteredSales();
+ $("rCount").textContent=list.length;
+ $("rRevenue").textContent=money(list.reduce((n,s)=>n+s.total,0));
+ $("rProfit").textContent=money(list.reduce((n,s)=>n+(s.profit??0),0));
+ $("rUnits").textContent=list.reduce((n,s)=>n+s.items.reduce((m,i)=>m+i.qty,0),0);
+ $("reportTable").innerHTML=list.length?list.slice().reverse().map(s=>`
+ <tr><td>${new Date(s.time).toLocaleString("id-ID")}</td>
+ <td>${esc(s.id)}</td><td>${esc(s.customer||"Umum")}</td><td>${esc(s.method)}</td>
+ <td>${s.items.reduce((n,i)=>n+i.qty,0)}</td><td>${money(s.total)}</td>
+ <td><button class="btn btn-light" onclick="viewSale('${s.id}')">Lihat Struk</button></td></tr>`
+ ).join(""):'<tr><td colspan="7" class="empty">Tidak ada transaksi pada periode ini.</td></tr>';
+}
+function resetReportDates(){
+ $("dateFrom").value="";
+ $("dateTo").value="";
+ renderReports();
+}
+function viewSale(id){
+ const s=sales.find(x=>x.id===id);
+ if(!s)return;
+ lastSale=s;showReceipt(s);navigate("kasir");
+}
+function exportCSV(){
+ const list=getFilteredSales();
+ const rows=[["Waktu","Nomor Transaksi","Pelanggan","Metode","Kode Produk","Nama Produk","Ukuran","Warna","Qty","Harga","Diskon Transaksi","Total Transaksi"]];
+ list.forEach(s=>s.items.forEach(i=>rows.push([
+  new Date(s.time).toLocaleString("id-ID"),s.id,s.customer||"Umum",s.method,
+  i.code,i.name,i.size,i.color,i.qty,i.price,s.discount,s.total
+ ])));
+ const csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ const a=document.createElement("a");a.href=url;a.download="laporan-fashion.csv";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("settingsForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ settings={name:$("storeName").value.trim(),address:$("storeAddress").value.trim(),phone:$("storePhone").value.trim()};
+ save();
+ if(lastSale)showReceipt(lastSale);
+ notify("Pengaturan toko tersimpan.");
 });
-document.getElementById("ekspor").addEventListener("click",()=>{
-  const baris=[["Waktu","Nomor Transaksi","Barang","Jumlah","Total"]];
-  transaksi.forEach(t=>t.items.forEach(i=>baris.push([
-    new Date(t.waktu).toLocaleString("id-ID"),t.nomor,i.nama,i.qty,i.qty*i.harga
-  ])));
-  const csv=baris.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
-  const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}));
-  const a=document.createElement("a");a.href=url;a.download="laporan-penjualan.csv";a.click();
-  URL.revokeObjectURL(url);
+function backupData(){
+ const data={version:1,products,sales,settings};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
+ const a=document.createElement("a");a.href=url;a.download="cadangan-stylepos.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("restoreFile").addEventListener("change",async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  const data=JSON.parse(await file.text());
+  if(!Array.isArray(data.products)||!Array.isArray(data.sales)||!data.settings||typeof data.settings.name!=="string")
+   throw new Error("Format file tidak sesuai.");
+  if(!confirm("Pulihkan data? Data saat ini akan digantikan oleh isi cadangan."))return;
+  products=data.products;sales=data.sales;settings=data.settings;cart=[];lastSale=null;
+  save();loadSettings();renderAll();notify("Data berhasil dipulihkan.");
+ }catch(err){notify("File cadangan tidak valid.");}
+ finally{e.target.value="";}
 });
-renderSemua();
+function resetAll(){
+ if(!confirm("Yakin menghapus seluruh produk, transaksi dan pengaturan dari browser ini?"))return;
+ if(!confirm("Konfirmasi terakhir: data yang dihapus tidak bisa dikembalikan tanpa cadangan."))return;
+ localStorage.removeItem("stylepos_products");
+ localStorage.removeItem("stylepos_sales");
+ localStorage.removeItem("stylepos_settings");
+ products=sampleProducts.map(p=>({...p,variants:p.variants.map(v=>({...v}))}));
+ sales=[];cart=[];lastSale=null;
+ settings={name:"Style Fashion Store",address:"",phone:""};
+ save();loadSettings();renderAll();
+ $("lastReceipt").innerHTML='<div class="empty">Belum ada transaksi.</div>';
+ $("printReceipt").innerHTML="";
+ notify("Data aplikasi telah direset.");
+}
+function loadSettings(){
+ $("storeName").value=settings.name||"";
+ $("storeAddress").value=settings.address||"";
+ $("storePhone").value=settings.phone||"";
+}
+function renderAll(){
+ renderCategoryFilter();renderPOS();renderStock();renderDashboard();renderReports();
+}
+function updateClock(){
+ $("clock").textContent=new Date().toLocaleString("id-ID",{
+  weekday:"short",day:"2-digit",month:"short",year:"numeric",
+  hour:"2-digit",minute:"2-digit"
+ });
+}
+loadSettings();
+renderAll();
+updateClock();
+setInterval(updateClock,30000);
 </script>
 </body>
 </html>
-
