@@ -1,1 +1,382 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasir Sembako</title>
+<style>
+:root{--green:#16784b;--light:#f3f7f4;--border:#dfe7e1}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:#203127}
+header{background:var(--green);color:white;padding:22px 5%}
+header h1{margin:0 0 6px;font-size:25px}
+header p{margin:0;font-size:14px}
+nav{display:flex;gap:8px;padding:12px 5%;background:white;overflow:auto;border-bottom:1px solid var(--border)}
+button{cursor:pointer;border:0;border-radius:8px;padding:11px 14px;font-weight:600}
+nav button{background:#edf3ef;color:#28513b;white-space:nowrap}
+nav button.active,.primary{background:var(--green);color:white}
+main{max-width:1100px;margin:auto;padding:22px 5% 50px}
+.panel{background:white;padding:18px;border:1px solid var(--border);border-radius:12px;margin-bottom:16px}
+h2{font-size:19px;margin:0 0 16px}
+h3{font-size:16px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat{background:white;border:1px solid var(--border);border-radius:12px;padding:15px}
+.stat span{font-size:12px;color:#617066}
+.stat strong{display:block;font-size:20px;margin-top:8px;overflow-wrap:anywhere}
+input,select{width:100%;padding:11px;border:1px solid #cbd8ce;border-radius:7px;font:inherit;margin:5px 0 12px;background:white}
+label{font-size:13px;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.product{border:1px solid var(--border);padding:13px;border-radius:9px;margin:9px 0}
+.product button{margin-top:8px}
+.small{font-size:12px;color:#68776d}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--border)}
+th{color:#637268}
+.table-wrap{overflow-x:auto}
+.danger{background:#fff0ed;color:#a52b1d}
+.secondary{background:#edf3ef;color:#24573c}
+.total{font-size:21px;font-weight:bold;color:var(--green)}
+.empty{padding:18px;text-align:center;color:#758078}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.hidden{display:none!important}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.stat strong{font-size:18px}main{padding:16px 4%}.panel{padding:13px}header{padding:20px 4%}}
+@media print{
+body{background:white;color:black}
+body *{visibility:hidden}
+#printArea,#printArea *{visibility:visible}
+#printArea{position:absolute;left:0;top:0;width:100%;padding:10px;font-size:12px}
+#printArea table{font-size:11px}
+.no-print{display:none!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌿 Kasir Sembako</h1>
+  <p>Aplikasi penjualan dan stok toko</p>
+</header>
+<nav class="no-print">
+  <button class="active" data-tab="kasir">🛒 Kasir</button>
+  <button data-tab="stok">📦 Stok Barang</button>
+  <button data-tab="laporan">📊 Laporan</button>
+</nav>
+<main>
+<section id="kasir" class="tab">
+  <div class="stats">
+    <div class="stat"><span>Produk tersedia</span><strong id="jumlahProduk">0</strong></div>
+    <div class="stat"><span>Transaksi hari ini</span><strong id="jumlahTransaksi">0</strong></div>
+    <div class="stat"><span>Penjualan hari ini</span><strong id="penjualanHari">Rp0</strong></div>
+  </div>
+  <div class="grid">
+    <div class="panel">
+      <h2>Daftar Barang</h2>
+      <input id="cariBarang" placeholder="Cari nama barang..." />
+      <div id="daftarKasir"></div>
+    </div>
+    <div class="panel">
+      <h2>Keranjang Belanja</h2>
+      <div id="keranjang"></div>
+      <hr style="border:0;border-top:1px solid #dfe7e1;margin:16px 0">
+      <div class="row"><span>Total belanja</span><strong id="total" class="total">Rp0</strong></div>
+      <label for="bayar">Uang pembayaran (Rp)</label>
+      <input id="bayar" type="number" min="0" placeholder="Masukkan uang pembeli">
+      <div class="row"><span>Kembalian</span><strong id="kembalian">Rp0</strong></div>
+      <button class="primary" style="width:100%;margin-top:14px" id="proses">Proses Pembayaran</button>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Struk Transaksi Terakhir</h2>
+    <div id="struk"><p class="empty">Struk akan tampil setelah pembayaran.</p></div>
+    <button class="secondary no-print" id="cetak">🖨️ Cetak Struk</button>
+  </div>
+</section>
+
+<section id="stok" class="tab hidden">
+  <div class="panel">
+    <h2>Tambah Barang</h2>
+    <form id="formBarang">
+      <label for="nama">Nama barang</label>
+      <input id="nama" required placeholder="Contoh: Beras 5 kg">
+      <div class="grid">
+        <div><label for="harga">Harga jual (Rp)</label><input id="harga" type="number" min="1" required placeholder="75000"></div>
+        <div><label for="stokAwal">Jumlah stok</label><input id="stokAwal" type="number" min="0" required placeholder="10"></div>
+      </div>
+      <button class="primary" type="submit">Tambah Barang</button>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>Daftar Stok Barang</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Barang</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="tabelStok"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="laporan" class="tab hidden">
+  <div class="stats">
+    <div class="stat"><span>Total semua transaksi</span><strong id="totalTransaksi">0</strong></div>
+    <div class="stat"><span>Total penjualan</span><strong id="totalPenjualan">Rp0</strong></div>
+    <div class="stat"><span>Barang terjual</span><strong id="barangTerjual">0</strong></div>
+  </div>
+  <div class="panel">
+    <h2>Riwayat Penjualan</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Waktu</th><th>No. Struk</th><th>Jumlah item</th><th>Total</th></tr></thead><tbody id="tabelLaporan"></tbody></table>
+    </div>
+    <p id="kosongLaporan" class="empty hidden">Belum ada transaksi.</p>
+    <button id="ekspor" class="secondary">Unduh Laporan CSV</button>
+  </div>
+</section>
+</main>
+<div id="printArea" style="display:none"></div>
+<script>
+const rupiah = n => new Intl.NumberFormat("id-ID",{
+  style:"currency",currency:"IDR",maximumFractionDigits:0
+}).format(n);
+
+const contohBarang = [
+  {id:1,nama:"Beras 5 kg",harga:75000,stok:20},
+  {id:2,nama:"Minyak Goreng 1 L",harga:18000,stok:30},
+  {id:3,nama:"Gula Pasir 1 kg",harga:17000,stok:25},
+  {id:4,nama:"Telur 1 kg",harga:29000,stok:15},
+  {id:5,nama:"Mi Instan",harga:3500,stok:100},
+  {id:6,nama:"Air Mineral",harga:4000,stok:40}
+];
+
+function baca(kunci,awal){
+  try{
+    const data=localStorage.getItem(kunci);
+    return data===null ? awal : JSON.parse(data);
+  }catch(e){return awal}
+}
+let barang=baca("sembako_barang",contohBarang);
+let transaksi=baca("sembako_transaksi",[]);
+let keranjang=[];
+let strukTerakhir=null;
+
+function simpan(){
+  localStorage.setItem("sembako_barang",JSON.stringify(barang));
+  localStorage.setItem("sembako_transaksi",JSON.stringify(transaksi));
+}
+function aman(teks){
+  return String(teks).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function totalKeranjang(){
+  return keranjang.reduce((s,item)=>{
+    const b=barang.find(x=>x.id===item.id);
+    return s+(b?b.harga*item.qty:0);
+  },0);
+}
+function renderKasir(){
+  const cari=document.getElementById("cariBarang").value.toLowerCase();
+  const tersedia=barang.filter(b=>b.nama.toLowerCase().includes(cari));
+  document.getElementById("daftarKasir").innerHTML=tersedia.length
+    ? tersedia.map(b=>`<div class="product">
+      <div class="row"><strong>${aman(b.nama)}</strong><span class="small">Stok: ${b.stok}</span></div>
+      <div>${rupiah(b.harga)}</div>
+      <button class="secondary" ${b.stok<=0?"disabled":""} onclick="tambah(${b.id})">+ Tambah</button>
+    </div>`).join("")
+    : '<p class="empty">Barang tidak ditemukan.</p>';
+
+  document.getElementById("keranjang").innerHTML=keranjang.length
+    ? keranjang.map(i=>{
+      const b=barang.find(x=>x.id===i.id);
+      if(!b)return "";
+      return `<div class="product">
+       <strong>${aman(b.nama)}</strong>
+       <div class="row" style="margin-top:8px">
+        <span>${rupiah(b.harga)} × ${i.qty}</span>
+        <div class="actions">
+         <button class="secondary" onclick="ubahQty(${b.id},-1)">−</button>
+         <button class="secondary" onclick="ubahQty(${b.id},1)">+</button>
+         <button class="danger" onclick="hapusKeranjang(${b.id})">Hapus</button>
+        </div>
+       </div>
+       <p style="margin-bottom:0">${rupiah(b.harga*i.qty)}</p>
+      </div>`;
+    }).join("")
+    : '<p class="empty">Keranjang masih kosong.</p>';
+
+  document.getElementById("total").textContent=rupiah(totalKeranjang());
+  hitungKembalian();
+}
+function tambah(id){
+  const b=barang.find(x=>x.id===id);
+  if(!b||b.stok<=0)return alert("Stok barang habis.");
+  const item=keranjang.find(x=>x.id===id);
+  if(item){
+    if(item.qty>=b.stok)return alert("Jumlah melebihi stok.");
+    item.qty++;
+  }else keranjang.push({id,qty:1});
+  renderKasir();
+}
+function ubahQty(id,selisih){
+  const item=keranjang.find(x=>x.id===id);
+  const b=barang.find(x=>x.id===id);
+  if(!item||!b)return;
+  if(item.qty+selisih<=0)return hapusKeranjang(id);
+  if(item.qty+selisih>b.stok)return alert("Jumlah melebihi stok.");
+  item.qty+=selisih;
+  renderKasir();
+}
+function hapusKeranjang(id){
+  keranjang=keranjang.filter(x=>x.id!==id);
+  renderKasir();
+}
+function hitungKembalian(){
+  const bayar=Number(document.getElementById("bayar").value)||0;
+  document.getElementById("kembalian").textContent=
+    rupiah(Math.max(0,bayar-totalKeranjang()));
+}
+function hariIni(tanggal){
+  const d=new Date(tanggal);
+  const sekarang=new Date();
+  return d.getFullYear()===sekarang.getFullYear()&&
+    d.getMonth()===sekarang.getMonth()&&
+    d.getDate()===sekarang.getDate();
+}
+function renderSemua(){
+  renderKasir();
+  document.getElementById("jumlahProduk").textContent=barang.length;
+  const hari=transaksi.filter(t=>hariIni(t.waktu));
+  document.getElementById("jumlahTransaksi").textContent=hari.length;
+  document.getElementById("penjualanHari").textContent=
+    rupiah(hari.reduce((s,t)=>s+t.total,0));
+
+  document.getElementById("tabelStok").innerHTML=barang.map(b=>
+    `<tr><td>${aman(b.nama)}</td><td>${rupiah(b.harga)}</td>
+    <td>${b.stok}</td><td><div class="actions">
+    <button class="secondary" onclick="editBarang(${b.id})">Edit</button>
+    <button class="danger" onclick="hapusBarang(${b.id})">Hapus</button>
+    </div></td></tr>`).join("")||
+    '<tr><td colspan="4">Belum ada barang.</td></tr>';
+
+  document.getElementById("totalTransaksi").textContent=transaksi.length;
+  document.getElementById("totalPenjualan").textContent=
+    rupiah(transaksi.reduce((s,t)=>s+t.total,0));
+  document.getElementById("barangTerjual").textContent=
+    transaksi.reduce((s,t)=>s+t.items.reduce((n,i)=>n+i.qty,0),0);
+  document.getElementById("tabelLaporan").innerHTML=transaksi.slice().reverse().map(t=>
+    `<tr><td>${new Date(t.waktu).toLocaleString("id-ID")}</td>
+    <td>${aman(t.nomor)}</td><td>${t.items.reduce((s,i)=>s+i.qty,0)}</td>
+    <td>${rupiah(t.total)}</td></tr>`).join("");
+  document.getElementById("kosongLaporan").classList.toggle("hidden",transaksi.length>0);
+}
+function editBarang(id){
+  const b=barang.find(x=>x.id===id);
+  if(!b)return;
+  const nama=prompt("Nama barang:",b.nama);
+  if(nama===null)return;
+  if(!nama.trim())return alert("Nama tidak boleh kosong.");
+  const harga=prompt("Harga jual (Rp):",b.harga);
+  if(harga===null)return;
+  const stok=prompt("Jumlah stok:",b.stok);
+  if(stok===null)return;
+  if(!Number.isFinite(Number(harga))||Number(harga)<=0||
+     !Number.isInteger(Number(stok))||Number(stok)<0)
+    return alert("Harga atau stok tidak valid.");
+  b.nama=nama.trim();b.harga=Number(harga);b.stok=Number(stok);
+  simpan();renderSemua();
+}
+function hapusBarang(id){
+  const b=barang.find(x=>x.id===id);
+  if(!b||!confirm("Hapus "+b.nama+"?"))return;
+  barang=barang.filter(x=>x.id!==id);
+  keranjang=keranjang.filter(x=>x.id!==id);
+  simpan();renderSemua();
+}
+document.getElementById("formBarang").addEventListener("submit",e=>{
+  e.preventDefault();
+  const nama=document.getElementById("nama").value.trim();
+  const harga=Number(document.getElementById("harga").value);
+  const stok=Number(document.getElementById("stokAwal").value);
+  if(!nama||harga<=0||!Number.isFinite(harga)||
+     !Number.isInteger(stok)||stok<0)return alert("Periksa data barang.");
+  barang.push({id:Date.now(),nama,harga,stok});
+  simpan();e.target.reset();renderSemua();
+  alert("Barang berhasil ditambahkan.");
+});
+document.getElementById("cariBarang").addEventListener("input",renderKasir);
+document.getElementById("bayar").addEventListener("input",hitungKembalian);
+
+document.getElementById("proses").addEventListener("click",()=>{
+  const total=totalKeranjang();
+  const bayar=Number(document.getElementById("bayar").value);
+  if(!keranjang.length)return alert("Keranjang masih kosong.");
+  if(!Number.isFinite(bayar)||bayar<total)
+    return alert("Uang pembayaran kurang atau belum diisi.");
+  for(const i of keranjang){
+    const b=barang.find(x=>x.id===i.id);
+    if(!b||b.stok<i.qty)return alert("Stok "+(b?b.nama:"barang")+" tidak cukup.");
+  }
+  const items=keranjang.map(i=>{
+    const b=barang.find(x=>x.id===i.id);
+    return {nama:b.nama,harga:b.harga,qty:i.qty};
+  });
+  const t={
+    nomor:"TRX-"+Date.now(),
+    waktu:new Date().toISOString(),
+    items,total,bayar,kembalian:bayar-total
+  };
+  keranjang.forEach(i=>{
+    barang.find(x=>x.id===i.id).stok-=i.qty;
+  });
+  transaksi.push(t);
+  strukTerakhir=t;
+  keranjang=[];
+  document.getElementById("bayar").value="";
+  simpan();renderSemua();tampilkanStruk(t);
+  alert("Pembayaran berhasil!");
+});
+function tampilkanStruk(t){
+  const isi=`<div style="max-width:360px;margin:auto;font-family:monospace;color:black">
+    <h3 style="text-align:center">TOKO SEMBAKO</h3>
+    <p style="text-align:center">Terima kasih sudah berbelanja</p>
+    <hr>
+    <p>No: ${aman(t.nomor)}<br>${new Date(t.waktu).toLocaleString("id-ID")}</p>
+    <hr>
+    ${t.items.map(i=>`<p>${aman(i.nama)}<br>${i.qty} x ${rupiah(i.harga)}
+    <span style="float:right">${rupiah(i.qty*i.harga)}</span></p>`).join("")}
+    <hr>
+    <p>Total: <b style="float:right">${rupiah(t.total)}</b></p>
+    <p>Bayar: <span style="float:right">${rupiah(t.bayar)}</span></p>
+    <p>Kembali: <span style="float:right">${rupiah(t.kembalian)}</span></p>
+    <hr><p style="text-align:center">Barang yang sudah dibeli<br>terima kasih</p>
+  </div>`;
+  document.getElementById("struk").innerHTML=isi;
+  document.getElementById("printArea").innerHTML=isi;
+}
+document.getElementById("cetak").addEventListener("click",()=>{
+  if(!strukTerakhir)return alert("Belum ada struk untuk dicetak.");
+  document.getElementById("printArea").style.display="block";
+  window.print();
+  document.getElementById("printArea").style.display="none";
+});
+document.querySelectorAll("nav button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".tab").forEach(s=>s.classList.add("hidden"));
+    document.getElementById(btn.dataset.tab).classList.remove("hidden");
+    renderSemua();
+  });
+});
+document.getElementById("ekspor").addEventListener("click",()=>{
+  const baris=[["Waktu","Nomor Transaksi","Barang","Jumlah","Total"]];
+  transaksi.forEach(t=>t.items.forEach(i=>baris.push([
+    new Date(t.waktu).toLocaleString("id-ID"),t.nomor,i.nama,i.qty,i.qty*i.harga
+  ])));
+  const csv=baris.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}));
+  const a=document.createElement("a");a.href=url;a.download="laporan-penjualan.csv";a.click();
+  URL.revokeObjectURL(url);
+});
+renderSemua();
+</script>
+</body>
+</html>
+
